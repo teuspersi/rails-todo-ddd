@@ -8,10 +8,14 @@ module Todos
           @id = id
           @title = title
           @due_date = due_date
+
+          validate!
         end
 
-        def valid?
-          @title.present? && @due_date.present?
+        def validate!
+          return if title.present? && due_date.present?
+          
+          raise Todos::Domain::Errors::ValidationError.new('Title and due date are required')
         end
       end
     end
