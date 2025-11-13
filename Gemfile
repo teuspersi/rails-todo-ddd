@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 ruby '2.7.8'
 
 gem 'rails', '~> 6.1'
+gem 'dotenv-rails'
 gem 'pg', '~> 1.5.0'
 gem 'puma', '~> 5.6.9'
 gem 'ffi', '< 1.17.0'
