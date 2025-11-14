@@ -13,6 +13,14 @@ module Todos
         def update(todo_item)
           raise NotImplementedError
         end
+
+        def batch_update_due_dates(item_ids, date_diff)
+          raise NotImplementedError
+        end
+
+        def find_dependent_ids(item_id)
+          raise NotImplementedError
+        end
       end
     end
   end

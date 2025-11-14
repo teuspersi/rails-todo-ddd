@@ -14,15 +14,24 @@ module Todos
 
         def call(id, params)
           ::ActiveRecord::Base.transaction do
-            todo_item = @todo_item_repository.find_with_dependencies(id)
-            raise RecordNotFoundErro, 'Todo item not found' if todo_item.nil?
-
+            todo_item = find_todo_item(id)
+            old_due_date = todo_item.due_date
             update_todo_item(todo_item, params)
             update_dependencies(todo_item, params[:dependency_ids]) if params.key?(:dependency_ids)
+            if params.key?(:due_date) && old_due_date != todo_item.due_date
+              cascade_due_date_update(todo_item, old_due_date, todo_item.due_date)
+            end
           end
         end
 
         private
+
+        def find_todo_item(id)
+          todo_item = @todo_item_repository.find_with_dependencies(id)
+          raise RecordNotFoundErro, 'Todo item not found' if todo_item.nil?
+
+          todo_item
+        end
 
         def update_todo_item(todo_item, params)
           todo_item.update_title(params[:title]) if params.key?(:title)
@@ -50,6 +59,17 @@ module Todos
 
             @dependency_repository.create(todo_item.id, dependency.id)
           end
+        end
+
+        def cascade_due_date_update(todo_item, old_date, new_date)
+          date_diff = (new_date - old_date).to_i
+          
+          cascade_service = Todos::Domain::Services::TodoItemDependencyCascadeService.new(@todo_item_repository)
+          all_dependent_ids = cascade_service.collect_all_dependent_ids(todo_item.id)
+          
+          return if all_dependent_ids.empty?
+          
+          @todo_item_repository.batch_update_due_dates(all_dependent_ids, date_diff)
         end
 
         def default_todo_item_repository

@@ -39,11 +39,36 @@ RSpec.describe Todos::Application::Services::UpdateTodoItemService do
 
     context 'when new due_date is invalid according to existing dependency due_date' do
       let(:params) { { due_date: Date.parse('2025-10-19') } }
-      let!(:dependency_item) { create(:todo_item_record, due_date: Date.parse('2025-10-20')) }
+      let(:dependency_item) { create(:todo_item_record, due_date: Date.parse('2025-10-20')) }
       let!(:dependency) { create(:todo_item_dependency_link_record, todo_item_record: item, depends_on_record: dependency_item) }
 
       it 'raises an error' do
         expect { action }.to raise_error(Todos::Domain::Errors::ValidationError, "Due date must be after dependency's due date")
+      end
+    end
+
+    context 'when the todo item has dependents' do
+      let(:dependent_item) { create(:todo_item_record, due_date: Date.parse('2025-10-21')) }
+      let!(:dependent) { create(:todo_item_dependency_link_record, todo_item_record: dependent_item, depends_on_record: item) }
+
+      it 'updates dependent dates when due_date is updated' do
+        action
+
+        expect(item.reload.due_date).to eq(Date.parse('2025-10-21'))
+        expect(dependent_item.reload.due_date).to eq(Date.parse('2025-10-22'))
+      end
+
+      context 'with nested dependents (A -> B -> C)' do
+        let(:dependent_item_2) { create(:todo_item_record, due_date: Date.parse('2025-10-22')) }
+        let!(:dependent_2) { create(:todo_item_dependency_link_record, todo_item_record: dependent_item_2, depends_on_record: dependent_item) }
+
+        it 'updates all dependent dates recursively' do
+          action
+
+          expect(item.reload.due_date).to eq(Date.parse('2025-10-21'))
+          expect(dependent_item.reload.due_date).to eq(Date.parse('2025-10-22'))
+          expect(dependent_item_2.reload.due_date).to eq(Date.parse('2025-10-23'))
+        end
       end
     end
   end

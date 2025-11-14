@@ -28,11 +28,29 @@ module Todos
             record.reload
             Mappers::TodoItemMapper.to_entity(record, include_relations: false)
           end
+
+          def batch_update_due_dates(item_ids, date_diff)
+            return if item_ids.empty?
+            
+            record_class
+              .where(id: item_ids)
+              .update_all("due_date = due_date + INTERVAL '#{date_diff} days'")
+          end
+
+          def find_dependent_ids(item_id)
+            dependency_link_record_class
+              .where(depends_on_id: item_id)
+              .pluck(:todo_item_id)
+          end
           
           private
 
           def record_class
             Todos::Infrastructure::Persistence::ActiveRecord::TodoItemRecord
+          end
+
+          def dependency_link_record_class
+            Todos::Infrastructure::Persistence::ActiveRecord::TodoItemDependencyLinkRecord
           end
         end
       end
