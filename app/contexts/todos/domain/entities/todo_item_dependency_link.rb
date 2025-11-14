@@ -1,7 +1,7 @@
 module Todos
   module Domain
     module Entities
-      class TodoItemDependency
+      class TodoItemDependencyLink
         attr_reader :id, :todo_item_id, :depends_on_id, :created_at
 
         def initialize(id:, todo_item_id:, depends_on_id:, created_at: nil)

@@ -2,8 +2,8 @@ module Todos
   module Infrastructure
     module Persistence
       module ActiveRecord
-        class TodoItemDependencyRecord < ::ApplicationRecord
-          self.table_name = 'todo_item_dependencies'
+        class TodoItemDependencyLinkRecord < ::ApplicationRecord
+          self.table_name = 'todo_item_dependency_links'
 
           belongs_to :todo_item_record,
                      class_name: 'Todos::Infrastructure::Persistence::ActiveRecord::TodoItemRecord',

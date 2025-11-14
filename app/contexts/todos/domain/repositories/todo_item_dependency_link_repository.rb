@@ -1,7 +1,7 @@
 module Todos
   module Domain
     module Repositories
-      class TodoItemDependencyRepository
+      class TodoItemDependencyLinkRepository
         def create(todo_item_id, depends_on_id)
           raise NotImplementedError
         end

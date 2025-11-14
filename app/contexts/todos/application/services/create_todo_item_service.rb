@@ -47,7 +47,7 @@ module Todos
         end
 
         def default_dependency_repository
-          Todos::Infrastructure::Persistence::Repositories::TodoItemDependencyRepositoryImpl.new
+          Todos::Infrastructure::Persistence::Repositories::TodoItemDependencyLinkRepositoryImpl.new
         end
 
         def default_dependency_specification

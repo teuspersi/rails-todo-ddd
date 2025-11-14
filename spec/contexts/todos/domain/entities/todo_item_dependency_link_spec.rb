@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Todos::Domain::Entities::TodoItemDependency do
+RSpec.describe Todos::Domain::Entities::TodoItemDependencyLink do
   let(:action) { described_class.new(id: 1, todo_item_id: todo_item_id, depends_on_id: depends_on_id) }
 
   context 'when todo_item_id is blank' do

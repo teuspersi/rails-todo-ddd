@@ -40,7 +40,7 @@ RSpec.describe Todos::Application::Services::UpdateTodoItemService do
     context "when new due_date is invalid according to existing dependency due_date" do
       let(:params) { { due_date: Date.parse('2025-10-19') } }
       let!(:dependency_item) { create(:todo_item_record, due_date: Date.parse('2025-10-20')) }
-      let!(:dependency) { create(:todo_item_dependency_record, todo_item_record: item, depends_on_record: dependency_item) }
+      let!(:dependency) { create(:todo_item_dependency_link_record, todo_item_record: item, depends_on_record: dependency_item) }
 
       it 'raises an error' do
         expect { action }.to raise_error(Todos::Domain::Errors::ValidationError)

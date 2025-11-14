@@ -5,22 +5,22 @@ module Todos
         class TodoItemRecord < ::ApplicationRecord
           self.table_name = 'todo_items'
 
-          has_many :todo_item_dependency_records,
-                   class_name: 'Todos::Infrastructure::Persistence::ActiveRecord::TodoItemDependencyRecord',
+          has_many :dependency_link_records,
+                   class_name: 'Todos::Infrastructure::Persistence::ActiveRecord::TodoItemDependencyLinkRecord',
                    foreign_key: :todo_item_id,
                    dependent: :destroy
 
           has_many :dependency_records,
-                   through: :todo_item_dependency_records,
+                   through: :dependency_link_records,
                    source: :depends_on_record
 
-          has_many :dependent_todo_item_dependency_records,
-                   class_name: 'Todos::Infrastructure::Persistence::ActiveRecord::TodoItemDependencyRecord',
+          has_many :dependent_link_records,
+                   class_name: 'Todos::Infrastructure::Persistence::ActiveRecord::TodoItemDependencyLinkRecord',
                    foreign_key: :depends_on_id,
                    dependent: :destroy
 
           has_many :dependent_records,
-                   through: :dependent_todo_item_dependency_records,
+                   through: :dependent_link_records,
                    source: :todo_item_record
 
           validates :title, presence: true
