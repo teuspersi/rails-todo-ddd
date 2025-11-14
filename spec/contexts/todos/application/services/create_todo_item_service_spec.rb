@@ -22,7 +22,6 @@ RSpec.describe Todos::Application::Services::CreateTodoItemService do
       it 'creates with dependencies' do
         result = action
       
-        puts result.as_json
         expect(result.dependencies.size).to eq(1)
       end
     end

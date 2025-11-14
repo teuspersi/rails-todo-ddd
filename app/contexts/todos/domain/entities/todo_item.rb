@@ -22,6 +22,11 @@ module Todos
           
           raise Todos::Domain::Errors::ValidationError.new('Title and due date are required')
         end
+
+        def depends_on?(other_item)
+          dependencies.any? { |dep| dep.id == other_item.id } ||
+            dependencies.any? { |dep| dep.depends_on?(other_item) }
+        end
       end
     end
   end
