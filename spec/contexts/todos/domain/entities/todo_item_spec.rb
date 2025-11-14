@@ -3,25 +3,25 @@ require 'rails_helper'
 RSpec.describe Todos::Domain::Entities::TodoItem do
   let(:action) { Todos::Domain::Entities::TodoItem.new(id: 1, title: title, due_date: due_date) }
 
-  context "when title is blank" do
+  context 'when title is blank' do
     let(:title) { '' }
     let(:due_date) { Date.parse('2025-11-14') }
 
-    it "raises an error" do
-      expect { action }.to raise_error(Todos::Domain::Errors::ValidationError)
+    it 'raises an error' do
+      expect { action }.to raise_error(Todos::Domain::Errors::ValidationError, 'Title and due date are required')
     end
   end
 
-  context "when due_date is blank" do
+  context 'when due_date is blank' do
     let(:title) { 'Test' }
     let(:due_date) { nil }
 
-    it "raises an error" do
-      expect { action }.to raise_error(Todos::Domain::Errors::ValidationError)
+    it 'raises an error' do
+      expect { action }.to raise_error(Todos::Domain::Errors::ValidationError, 'Title and due date are required')
     end
   end
 
-  describe "#depends_on?" do
+  describe '#depends_on?' do
     let(:item_a) { described_class.new(id: 1, title: 'A', due_date: Date.parse('2025-11-14')) }
     let(:item_b) { described_class.new(id: 2, title: 'B', due_date: Date.parse('2025-11-15')) }
     let(:item_c) { described_class.new(id: 3, title: 'C', due_date: Date.parse('2025-11-16')) }
@@ -44,7 +44,7 @@ RSpec.describe Todos::Domain::Entities::TodoItem do
     end
   end
 
-  describe "#update_title" do
+  describe '#update_title' do
     let(:item) { described_class.new(id: 1, title: 'Test', due_date: Date.parse('2025-11-14')) }
     let(:new_title) { 'Updated Title' }
 
@@ -57,12 +57,12 @@ RSpec.describe Todos::Domain::Entities::TodoItem do
       let(:new_title) { '' }
 
       it 'raises an error' do
-        expect { item.update_title(new_title) }.to raise_error(Todos::Domain::Errors::ArgumentError)
+        expect { item.update_title(new_title) }.to raise_error(Todos::Domain::Errors::ArgumentError, 'Title cannot be blank')
       end
     end
   end
 
-  describe "#update_due_date" do
+  describe '#update_due_date' do
     let(:item) { described_class.new(id: 1, title: 'Test', due_date: Date.parse('2025-11-14')) }
     let(:new_due_date) { Date.parse('2025-11-15') }
 
@@ -75,12 +75,12 @@ RSpec.describe Todos::Domain::Entities::TodoItem do
       let(:new_due_date) { nil }
 
       it 'raises an error' do
-        expect { item.update_due_date(new_due_date) }.to raise_error(Todos::Domain::Errors::ArgumentError)
+        expect { item.update_due_date(new_due_date) }.to raise_error(Todos::Domain::Errors::ArgumentError, 'Due date cannot be blank')
       end
     end
   end
 
-  describe "#update_completed" do
+  describe '#update_completed' do
     let(:item) { described_class.new(id: 1, title: 'Test', due_date: Date.parse('2025-11-14')) }
     let(:new_completed) { true }
 
@@ -93,7 +93,7 @@ RSpec.describe Todos::Domain::Entities::TodoItem do
       let(:new_completed) { nil }
 
       it 'raises an error' do
-        expect { item.update_completed(new_completed) }.to raise_error(Todos::Domain::Errors::ArgumentError)
+        expect { item.update_completed(new_completed) }.to raise_error(Todos::Domain::Errors::ArgumentError, 'Completed cannot be blank')
       end
     end
   end

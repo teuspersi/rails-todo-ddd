@@ -31,7 +31,7 @@ RSpec.describe Todos::Application::Services::CreateTodoItemService do
       let(:params) { { title: 'Task B', due_date: Date.parse('2025-11-14'), dependency_ids: [dependency.id] } }
 
       it 'raises an error' do
-        expect { action }.to raise_error(Todos::Domain::Errors::ValidationError)
+        expect { action }.to raise_error(Todos::Domain::Errors::ValidationError, "Due date must be after dependency's due date")
       end
     end
   end

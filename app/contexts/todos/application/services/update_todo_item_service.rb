@@ -15,7 +15,7 @@ module Todos
         def call(id, params)
           ::ActiveRecord::Base.transaction do
             todo_item = @todo_item_repository.find_with_dependencies(id)
-            raise RecordNotFoundErro, "Todo item not found" if todo_item.nil?
+            raise RecordNotFoundErro, 'Todo item not found' if todo_item.nil?
 
             update_todo_item(todo_item, params)
             update_dependencies(todo_item, params[:dependency_ids]) if params.key?(:dependency_ids)

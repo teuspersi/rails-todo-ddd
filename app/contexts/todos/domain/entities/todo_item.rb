@@ -30,17 +30,17 @@ module Todos
         end
 
         def update_title(new_title)
-          raise Todos::Domain::Errors::ArgumentError, "Title cannot be blank" if new_title.blank?
+          raise Todos::Domain::Errors::ArgumentError, 'Title cannot be blank' if new_title.blank?
           @title = new_title
         end
 
         def update_due_date(new_due_date)
-          raise Todos::Domain::Errors::ArgumentError, "Due date cannot be blank" if new_due_date.blank?
+          raise Todos::Domain::Errors::ArgumentError, 'Due date cannot be blank' if new_due_date.blank?
           @due_date = new_due_date
         end
 
         def update_completed(new_completed)
-          raise Todos::Domain::Errors::ArgumentError, "Completed cannot be blank" if new_completed.blank?
+          raise Todos::Domain::Errors::ArgumentError, 'Completed cannot be blank' if new_completed.blank?
           @completed = new_completed
         end
       end
