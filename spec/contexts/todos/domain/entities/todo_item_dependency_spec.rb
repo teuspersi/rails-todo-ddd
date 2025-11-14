@@ -8,7 +8,7 @@ RSpec.describe Todos::Domain::Entities::TodoItemDependency do
     let(:depends_on_id) { 1 }
 
     it 'raises an error' do
-      expect { action }.to raise_error(Todos::Domain::Errors::ValidationError)
+      expect { action }.to raise_error(Todos::Domain::Errors::ValidationError, 'Invalid dependency')
     end
   end
 
@@ -17,7 +17,7 @@ RSpec.describe Todos::Domain::Entities::TodoItemDependency do
     let(:depends_on_id) { nil }
 
     it 'raises an error' do
-      expect { action }.to raise_error(Todos::Domain::Errors::ValidationError)
+      expect { action }.to raise_error(Todos::Domain::Errors::ValidationError, 'Invalid dependency')
     end
   end
 
@@ -26,7 +26,7 @@ RSpec.describe Todos::Domain::Entities::TodoItemDependency do
     let(:depends_on_id) { 1 }
 
     it 'raises an error' do
-      expect { action }.to raise_error(Todos::Domain::Errors::ValidationError)
+      expect { action }.to raise_error(Todos::Domain::Errors::ValidationError, 'Invalid dependency')
     end
   end
 end

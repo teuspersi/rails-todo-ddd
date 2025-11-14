@@ -18,7 +18,7 @@ module Todos
         def validate!
           return if todo_item_id.present? && depends_on_id.present? && todo_item_id != depends_on_id
 
-          raise Todos::Domain::Errors::ValidationError.new('Invalid dependency')
+          raise Todos::Domain::Errors::ValidationError, 'Invalid dependency'
         end
       end
     end
