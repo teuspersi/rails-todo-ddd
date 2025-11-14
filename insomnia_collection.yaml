@@ -1,0 +1,400 @@
+type: collection.insomnia.rest/5.0
+name: TODO List API - DDD
+meta:
+  id: wrk_2b78a54999c449a393718f715d60c9da
+  created: 1763146699324
+  modified: 1763146699324
+collection:
+  - name: TODO Items
+    meta:
+      id: fld_ab229894044e4d38a24b1db54c377ca8
+      created: 1763146699327
+      modified: 1763146699327
+      sortKey: -1763146699328
+    children:
+      - url: "{{ _.base_url }}/todo_items"
+        name: List All TODOs
+        meta:
+          id: req_b0581ff1778a4313a1844206db332357
+          created: 1763146699325
+          modified: 1763146699325
+          isPrivate: false
+          description: Lista todos os items ordenados por due_date
+          sortKey: -1763146699325
+        method: GET
+        body:
+          mimeType: application/json
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/todo_items/1"
+        name: Get TODO by ID
+        meta:
+          id: req_d1307c3fc447457a9967da2015d43f92
+          created: 1763146699325
+          modified: 1763146699325
+          isPrivate: false
+          description: Busca um TODO específico com suas dependencies e dependents
+          sortKey: -1763146699325
+        method: GET
+        body:
+          mimeType: application/json
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/todo_items/1"
+        name: Update TODO
+        meta:
+          id: req_5c95f8baa01d43c096563fef512a2b8d
+          created: 1763146699326
+          modified: 1763146699326
+          isPrivate: false
+          description: Atualiza um TODO existente
+          sortKey: -1763146699326
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "todo_item": {
+                "title": "Implementar feature X (atualizado)",
+                "completed": true
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/todo_items"
+        name: Create TODO
+        meta:
+          id: req_bde0bd72285d4d0d84e1c234252bd07c
+          created: 1763146699326
+          modified: 1763146699326
+          isPrivate: false
+          description: Cria um novo TODO
+          sortKey: -1763146699326
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "todo_item": {
+                "title": "Implementar feature X",
+                "due_date": "2025-12-01",
+                "completed": false
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/todo_items"
+        name: Create TODO with Dependencies
+        meta:
+          id: req_d5e2b04956a84159a0791513091af570
+          created: 1763146699326
+          modified: 1763146818819
+          isPrivate: false
+          description: Cria um TODO que depende de outros (IDs 1 e 2 devem existir)
+          sortKey: -1763146699326
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "todo_item": {
+                "title": "Deploy em produção",
+                "due_date": "2025-12-10",
+                "completed": false,
+                "dependency_ids": [1, 3]
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/todo_items/1"
+        name: Update Due Date (Cascade)
+        meta:
+          id: req_0234fa9fe8704037a40d9e081d2cdd73
+          created: 1763146699327
+          modified: 1763146865327
+          isPrivate: false
+          description: Atualiza due_date e cascateia para todos os dependents
+          sortKey: -1763146699327
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "todo_item": {
+                "due_date": "2025-12-10"
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/todo_items/1"
+        name: Delete TODO
+        meta:
+          id: req_5d7e234606a345d3b8ccb8fb668b30e1
+          created: 1763146699327
+          modified: 1763146699327
+          isPrivate: false
+          description: Deleta um TODO e remove todos os links de dependência
+          sortKey: -1763146699327
+        method: DELETE
+        body:
+          mimeType: application/json
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/todo_items/4"
+        name: Update Dependencies
+        meta:
+          id: req_d1f52b9865314a38afabebf168501150
+          created: 1763146699327
+          modified: 1763146911759
+          isPrivate: false
+          description: Atualiza as dependencies de um TODO
+          sortKey: -1763146699327
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "todo_item": {
+                "dependency_ids": []
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Examples - Error Cases
+    meta:
+      id: fld_de96eaabccb94da9bfd47ee9ed33f4a8
+      created: 1763146699328
+      modified: 1763146699328
+      sortKey: -1763146699328
+    children:
+      - url: "{{ _.base_url }}/todo_items"
+        name: "Error: Invalid Data"
+        meta:
+          id: req_d7749f1eb22d4c8d82d72da07b3f06b2
+          created: 1763146699328
+          modified: 1763146699328
+          isPrivate: false
+          description: Tenta criar TODO com título vazio (erro de validação)
+          sortKey: -1763146699328
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "todo_item": {
+                "title": "",
+                "due_date": "2025-12-01"
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/todo_items/99999"
+        name: "Error: Not Found"
+        meta:
+          id: req_3c29a4dd131f463c9bc18024ca0c3387
+          created: 1763146699329
+          modified: 1763146699329
+          isPrivate: false
+          description: Busca TODO que não existe
+          sortKey: -1763146699329
+        method: GET
+        body:
+          mimeType: application/json
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/todo_items"
+        name: "Error: Invalid Due Date"
+        meta:
+          id: req_632deb198e6b4df5a183ae32fc20bb4a
+          created: 1763146699329
+          modified: 1763146699329
+          isPrivate: false
+          description: Due date deve ser DEPOIS da due date da dependency
+          sortKey: -1763146699329
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "todo_item": {
+                "title": "Task com data inválida",
+                "due_date": "2025-11-01",
+                "dependency_ids": [1]
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/todo_items"
+        name: "Error: Circular Dependency"
+        meta:
+          id: req_d70cd88bb6814f3da4e8f39454862ab1
+          created: 1763146699329
+          modified: 1763146970578
+          isPrivate: false
+          description: Se o item 2 já depende deste, criará dependência circular
+          sortKey: -1763146699329
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "todo_item": {
+                "title": "Task C",
+                "due_date": "2025-12-15",
+                "dependency_ids": [5]
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/todo_items/4"
+        name: "Error: Circular Dependency"
+        meta:
+          id: req_abeaceeb4afe41bda1e3fa89940dd1bc
+          created: 1763146981819
+          modified: 1763147005833
+          isPrivate: false
+          description: Se o item 2 já depende deste, criará dependência circular
+          sortKey: -1763146699328.5
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "todo_item": {
+                "dependency_ids": [4]
+              }
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_ca562263c0dc877a90e2cd6cbe49b4f0c430ebc8
+    created: 1763146699330
+    modified: 1763146699330
+environments:
+  name: Base Environment
+  meta:
+    id: env_0e207775444c44b6872333ba6773b4fd
+    created: 1763146699325
+    modified: 1763146699325
+    isPrivate: false
+  data:
+    base_url: http://localhost:3000/api/v1
