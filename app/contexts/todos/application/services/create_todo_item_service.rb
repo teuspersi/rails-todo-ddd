@@ -2,7 +2,11 @@ module Todos
   module Application
     module Services
       class CreateTodoItemService
-        def initialize(todo_item_repository: default_todo_item_repository, dependency_repository: default_dependency_repository, specification: default_specification)
+        def initialize(
+          todo_item_repository: default_todo_item_repository,
+          dependency_repository: default_dependency_repository,
+          specification: default_specification
+        )
           @todo_item_repository = todo_item_repository
           @dependency_repository = dependency_repository
           @specification = specification
@@ -27,7 +31,7 @@ module Todos
         end
 
         def create_dependencies(todo_item, dependency_ids)
-          dependency_ids.each do |dependency_id|
+          Array(dependency_ids).each do |dependency_id|
             dependency = @todo_item_repository.find_with_dependencies(dependency_id)
 
             @specification.new(todo_item, dependency).ensure_satisfied!
