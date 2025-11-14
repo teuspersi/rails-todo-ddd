@@ -10,6 +10,10 @@ module Todos
           raise NotImplementedError
         end
 
+        def find_many_with_dependencies(ids)
+          raise NotImplementedError
+        end
+
         def find_all
           raise NotImplementedError
         end

@@ -58,11 +58,12 @@ module Todos
         def update_dependencies(todo_item, dependency_ids)
           @dependency_repository.delete_by_todo_item(todo_item.id)
 
-          Array(dependency_ids).each do |dep_id|
-            dependency = @todo_item_repository.find_with_dependencies(dep_id)
+          return if dependency_ids.nil? || dependency_ids.empty?
 
+          dependencies = @todo_item_repository.find_many_with_dependencies(dependency_ids)
+
+          dependencies.each do |dependency|
             @dependency_specification.new(todo_item, dependency).ensure_satisfied!
-
             @dependency_repository.create(todo_item.id, dependency.id)
           end
         end

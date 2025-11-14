@@ -33,11 +33,12 @@ module Todos
         end
 
         def create_dependencies(todo_item, dependency_ids)
-          Array(dependency_ids).each do |dependency_id|
-            dependency = @todo_item_repository.find_with_dependencies(dependency_id)
-
+          return if dependency_ids.nil? || dependency_ids.empty?
+          
+          dependencies = @todo_item_repository.find_many_with_dependencies(dependency_ids)
+          
+          dependencies.each do |dependency|
             @dependency_specification.new(todo_item, dependency).ensure_satisfied!
-
             @dependency_repository.create(todo_item.id, dependency.id)
           end
         end

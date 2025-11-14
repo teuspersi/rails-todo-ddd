@@ -20,6 +20,16 @@ module Todos
             Mappers::TodoItemMapper.to_entity(record, include_relations: true)
           end
 
+          def find_many_with_dependencies(ids)
+            return [] if ids.empty?
+            
+            records = record_class
+              .includes(:dependency_records)
+              .where(id: ids)
+            
+            records.map { |record| Mappers::TodoItemMapper.to_entity(record, include_relations: true) }
+          end
+
           def find_all
             records = record_class
               .includes(:dependency_records, :dependent_records)
