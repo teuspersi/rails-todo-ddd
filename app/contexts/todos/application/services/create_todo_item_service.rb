@@ -12,10 +12,10 @@ module Todos
           @dependency_specification = dependency_specification
         end
 
-        def call(params)
+        def call(title:, due_date:, completed: false, dependency_ids: nil)
           ::ActiveRecord::Base.transaction do
-            todo_item = create_todo_item(params)
-            create_dependencies(todo_item, params[:dependency_ids]) if params[:dependency_ids].present?
+            todo_item = create_todo_item(title: title, due_date: due_date, completed: completed)
+            create_dependencies(todo_item, dependency_ids) if dependency_ids.present?
             
             @todo_item_repository.find_with_dependencies(todo_item.id)
           end
@@ -23,11 +23,12 @@ module Todos
 
         private
 
-        def create_todo_item(params)
+        def create_todo_item(title:, due_date:, completed:)
           todo_item = Todos::Domain::Entities::TodoItem.new(
             id: nil,
-            title: params[:title],
-            due_date: params[:due_date]
+            title: title,
+            due_date: due_date,
+            completed: completed
           )
           @todo_item_repository.save(todo_item)
         end

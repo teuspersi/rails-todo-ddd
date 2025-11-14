@@ -2,13 +2,10 @@ require 'rails_helper'
 
 RSpec.describe Todos::Application::Services::CreateTodoItemService do
   let(:service) { described_class.new }
-  let(:action) { service.call(params) }
 
   describe '#call' do
-    let(:params) { { title: 'Test', due_date: Date.parse('2025-11-14') } }
-
     it 'creates a todo item' do
-      result = action
+      result = service.call(title: 'Test', due_date: Date.parse('2025-11-14'))
 
       expect(result).not_to be_nil
       expect(result.title).to eq('Test')
@@ -17,10 +14,9 @@ RSpec.describe Todos::Application::Services::CreateTodoItemService do
 
     context 'with dependencies' do
       let(:dependency) { create(:todo_item_record, due_date: Date.parse('2025-11-14')) }
-      let(:params) { { title: 'Task B', due_date: Date.parse('2025-11-15'), dependency_ids: [dependency.id] } }
 
       it 'creates with dependencies' do
-        result = action
+        result = service.call(title: 'Task B', due_date: Date.parse('2025-11-15'), dependency_ids: [dependency.id])
       
         expect(result.dependencies.size).to eq(1)
       end
@@ -28,10 +24,11 @@ RSpec.describe Todos::Application::Services::CreateTodoItemService do
 
     context 'with invalid dependency (due_date violation)' do
       let(:dependency) { create(:todo_item_record, due_date: Date.parse('2025-11-15')) }
-      let(:params) { { title: 'Task B', due_date: Date.parse('2025-11-14'), dependency_ids: [dependency.id] } }
 
       it 'raises an error' do
-        expect { action }.to raise_error(Todos::Domain::Errors::ValidationError, "Due date must be after dependency's due date")
+        expect {
+          service.call(title: 'Task B', due_date: Date.parse('2025-11-14'), dependency_ids: [dependency.id])
+        }.to raise_error(Todos::Domain::Errors::ValidationError, "Due date must be after dependency's due date")
       end
     end
   end

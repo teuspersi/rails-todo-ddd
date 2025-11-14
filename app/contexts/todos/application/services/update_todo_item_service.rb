@@ -12,13 +12,13 @@ module Todos
           @dependency_specification = dependency_specification
         end
 
-        def call(id, params)
+        def call(id, title: nil, due_date: nil, completed: nil, dependency_ids: :not_provided)
           ::ActiveRecord::Base.transaction do
             todo_item = find_todo_item(id)
             old_due_date = todo_item.due_date
-            update_todo_item(todo_item, params)
-            update_dependencies(todo_item, params[:dependency_ids]) if params.key?(:dependency_ids)
-            if params.key?(:due_date) && old_due_date != todo_item.due_date
+            update_todo_item(todo_item, title: title, due_date: due_date, completed: completed, dependency_ids: dependency_ids)
+            update_dependencies(todo_item, dependency_ids) if dependency_ids != :not_provided
+            if due_date && old_due_date != todo_item.due_date
               cascade_due_date_update(todo_item, old_due_date, todo_item.due_date)
             end
             
@@ -39,12 +39,12 @@ module Todos
           @todo_item_repository.find_with_dependencies(id)
         end
 
-        def update_todo_item(todo_item, params)
-          todo_item.update_title(params[:title]) if params.key?(:title)
-          todo_item.update_due_date(params[:due_date]) if params.key?(:due_date)
-          todo_item.update_completed(params[:completed]) if params.key?(:completed)
+        def update_todo_item(todo_item, title:, due_date:, completed:, dependency_ids:)
+          todo_item.update_title(title) if title
+          todo_item.update_due_date(due_date) if due_date
+          todo_item.update_completed(completed) if !completed.nil?
 
-          validate_existing_dependencies(todo_item) unless params.key?(:dependency_ids)
+          validate_existing_dependencies(todo_item) if dependency_ids == :not_provided
 
           @todo_item_repository.update(todo_item)
         end

@@ -19,14 +19,14 @@ module Api
 
       def create
         service = Todos::Application::Services::CreateTodoItemService.new
-        todo_item = service.call(todo_item_params)
+        todo_item = service.call(**todo_item_params.to_h.symbolize_keys)
 
         render json: Todos::Presentation::Serializers::TodoItemSerializer.new(todo_item).as_json, status: :created
       end
 
       def update
         service = Todos::Application::Services::UpdateTodoItemService.new
-        todo_item = service.call(@todo_item.id, todo_item_params)
+        todo_item = service.call(@todo_item.id, **todo_item_params.to_h.symbolize_keys)
 
         render json: Todos::Presentation::Serializers::TodoItemSerializer.new(todo_item).as_json, status: :ok
       end
