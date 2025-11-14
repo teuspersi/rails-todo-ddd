@@ -5,11 +5,11 @@ module Todos
         def initialize(
           todo_item_repository: default_todo_item_repository,
           dependency_repository: default_dependency_repository,
-          specification: default_specification
+          dependency_specification: default_dependency_specification
         )
           @todo_item_repository = todo_item_repository
           @dependency_repository = dependency_repository
-          @specification = specification
+          @dependency_specification = dependency_specification
         end
 
         def call(params)
@@ -36,7 +36,7 @@ module Todos
           Array(dependency_ids).each do |dependency_id|
             dependency = @todo_item_repository.find_with_dependencies(dependency_id)
 
-            @specification.new(todo_item, dependency).ensure_satisfied!
+            @dependency_specification.new(todo_item, dependency).ensure_satisfied!
 
             @dependency_repository.create(todo_item.id, dependency.id)
           end
@@ -50,7 +50,7 @@ module Todos
           Todos::Infrastructure::Persistence::Repositories::TodoItemDependencyRepositoryImpl.new
         end
 
-        def default_specification
+        def default_dependency_specification
           Todos::Domain::Specifications::TodoItemDependencySpecification
         end
       end
