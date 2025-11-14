@@ -17,6 +17,10 @@ module Todos
             )
           end
 
+          def delete_by_todo_item(todo_item_id)
+            record_class.where(todo_item_id: todo_item_id).destroy_all
+          end
+
           private
 
           def record_class
