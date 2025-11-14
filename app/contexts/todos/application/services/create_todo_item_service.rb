@@ -13,10 +13,12 @@ module Todos
         end
 
         def call(params)
-          todo_item = create_todo_item(params)
-          create_dependencies(todo_item, params[:dependency_ids]) if params[:dependency_ids].present?
-
-          @todo_item_repository.find_with_dependencies(todo_item.id)
+          ::ActiveRecord::Base.transaction do
+            todo_item = create_todo_item(params)
+            create_dependencies(todo_item, params[:dependency_ids]) if params[:dependency_ids].present?
+            
+            @todo_item_repository.find_with_dependencies(todo_item.id)
+          end
         end
 
         private
