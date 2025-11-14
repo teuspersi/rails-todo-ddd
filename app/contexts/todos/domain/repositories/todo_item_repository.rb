@@ -21,6 +21,10 @@ module Todos
         def find_dependent_ids(item_id)
           raise NotImplementedError
         end
+
+        def delete(id)
+          raise NotImplementedError
+        end
       end
     end
   end

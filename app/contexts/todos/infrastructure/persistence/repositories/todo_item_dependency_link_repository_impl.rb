@@ -21,6 +21,10 @@ module Todos
             record_class.where(todo_item_id: todo_item_id).destroy_all
           end
 
+          def delete_by_depends_on(depends_on_id)
+            record_class.where(depends_on_id: depends_on_id).destroy_all
+          end
+
           private
 
           def record_class

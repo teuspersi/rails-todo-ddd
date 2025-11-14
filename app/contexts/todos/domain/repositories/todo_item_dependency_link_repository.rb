@@ -9,6 +9,10 @@ module Todos
         def delete_by_todo_item(todo_item_id)
           raise NotImplementedError
         end
+
+        def delete_by_depends_on(depends_on_id)
+          raise NotImplementedError
+        end
       end
     end
   end

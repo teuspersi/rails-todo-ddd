@@ -42,6 +42,10 @@ module Todos
               .where(depends_on_id: item_id)
               .pluck(:todo_item_id)
           end
+
+          def delete(id)
+            record_class.destroy(id)
+          end
           
           private
 
