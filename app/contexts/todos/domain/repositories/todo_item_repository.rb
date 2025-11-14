@@ -10,6 +10,10 @@ module Todos
           raise NotImplementedError
         end
 
+        def find_all
+          raise NotImplementedError
+        end
+
         def update(todo_item)
           raise NotImplementedError
         end
