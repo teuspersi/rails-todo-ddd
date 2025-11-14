@@ -6,6 +6,10 @@ module Todos
           raise NotImplementedError
         end
 
+        def find_by_id(id)
+          raise NotImplementedError
+        end
+
         def find_with_dependencies(id)
           raise NotImplementedError
         end

@@ -21,7 +21,7 @@ module Todos
         private
 
         def find_todo_item(id)
-          todo_item = @todo_item_repository.find_with_dependencies(id)
+          todo_item = @todo_item_repository.find_by_id(id)
           raise Todos::Domain::Errors::RecordNotFoundError, 'Todo item not found' if todo_item.nil?
 
           todo_item

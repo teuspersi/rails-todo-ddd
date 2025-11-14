@@ -10,6 +10,13 @@ module Todos
             Mappers::TodoItemMapper.to_entity(record, include_relations: false)
           end
 
+          def find_by_id(id)
+            record = record_class.find_by(id: id)
+            return nil unless record
+
+            Mappers::TodoItemMapper.to_entity(record, include_relations: false)
+          end
+
           def find_with_dependencies(id)
             record = record_class
               .includes(:dependency_records, :dependent_records)
