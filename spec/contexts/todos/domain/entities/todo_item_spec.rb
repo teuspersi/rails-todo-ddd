@@ -5,7 +5,7 @@ RSpec.describe Todos::Domain::Entities::TodoItem do
 
   context "when title is blank" do
     let(:title) { '' }
-    let(:due_date) { Date.today }
+    let(:due_date) { Date.parse('2025-11-14') }
 
     it "raises an error" do
       expect { action }.to raise_error(Todos::Domain::Errors::ValidationError)
@@ -22,9 +22,9 @@ RSpec.describe Todos::Domain::Entities::TodoItem do
   end
 
   describe "#depends_on?" do
-    let(:item_a) { described_class.new(id: 1, title: 'A', due_date: Date.today) }
-    let(:item_b) { described_class.new(id: 2, title: 'B', due_date: Date.today + 1) }
-    let(:item_c) { described_class.new(id: 3, title: 'C', due_date: Date.today + 2) }
+    let(:item_a) { described_class.new(id: 1, title: 'A', due_date: Date.parse('2025-11-14')) }
+    let(:item_b) { described_class.new(id: 2, title: 'B', due_date: Date.parse('2025-11-15')) }
+    let(:item_c) { described_class.new(id: 3, title: 'C', due_date: Date.parse('2025-11-16')) }
 
     it 'returns true for direct dependency' do
       item_b.dependencies = [item_a]

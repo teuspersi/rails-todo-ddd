@@ -7,7 +7,7 @@ RSpec.describe Todos::Domain::Specifications::TodoItemDependencySpecification do
     Todos::Domain::Entities::TodoItem.new(
       id: 1,
       title: 'Task A',
-      due_date: Date.parse('2025-10-21')
+      due_date: Date.parse('2025-11-14')
     )
   end
 
@@ -15,7 +15,7 @@ RSpec.describe Todos::Domain::Specifications::TodoItemDependencySpecification do
     Todos::Domain::Entities::TodoItem.new(
       id: 2,
       title: 'Task B',
-      due_date: Date.parse('2025-10-20')
+      due_date: Date.parse('2025-11-13')
     )
   end
 
@@ -46,7 +46,7 @@ RSpec.describe Todos::Domain::Specifications::TodoItemDependencySpecification do
   end
 
   context 'when due_date is equal to dependency due_date' do
-    let(:item_b) { Todos::Domain::Entities::TodoItem.new(id: 2, title: 'Task B', due_date: Date.parse('2025-10-21')) }
+    let(:item_b) { Todos::Domain::Entities::TodoItem.new(id: 2, title: 'Task B', due_date: Date.parse('2025-11-14')) }
     
     it 'raises an error' do
       expect { action }.to raise_error(Todos::Domain::Errors::ValidationError, "Due date must be after dependency's due date")
@@ -54,7 +54,7 @@ RSpec.describe Todos::Domain::Specifications::TodoItemDependencySpecification do
   end
 
   context 'when due_date is before dependency due_date' do
-    let(:item_b) { Todos::Domain::Entities::TodoItem.new(id: 2, title: 'Task B', due_date: Date.parse('2025-10-22')) }
+    let(:item_b) { Todos::Domain::Entities::TodoItem.new(id: 2, title: 'Task B', due_date: Date.parse('2025-11-15')) }
     
     it 'raises an error' do
       expect { action }.to raise_error(Todos::Domain::Errors::ValidationError, "Due date must be after dependency's due date")
