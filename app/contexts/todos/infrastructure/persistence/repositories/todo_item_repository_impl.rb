@@ -20,6 +20,15 @@ module Todos
             Mappers::TodoItemMapper.to_entity(record, include_relations: true)
           end
 
+          def update(todo_item)
+            record = record_class.find(todo_item.id)
+            attributes = Mappers::TodoItemMapper.to_record_attributes(todo_item)
+            record.update!(attributes)
+            
+            record.reload
+            Mappers::TodoItemMapper.to_entity(record, include_relations: false)
+          end
+          
           private
 
           def record_class

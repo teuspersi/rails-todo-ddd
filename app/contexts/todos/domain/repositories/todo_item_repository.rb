@@ -9,6 +9,10 @@ module Todos
         def find_with_dependencies(id)
           raise NotImplementedError
         end
+
+        def update(todo_item)
+          raise NotImplementedError
+        end
       end
     end
   end

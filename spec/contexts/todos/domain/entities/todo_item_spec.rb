@@ -43,4 +43,58 @@ RSpec.describe Todos::Domain::Entities::TodoItem do
       expect(item_c.depends_on?(item_a)).to be true
     end
   end
+
+  describe "#update_title" do
+    let(:item) { described_class.new(id: 1, title: 'Test', due_date: Date.parse('2025-11-14')) }
+    let(:new_title) { 'Updated Title' }
+
+    it 'updates the title' do
+      item.update_title(new_title)
+      expect(item.title).to eq(new_title)
+    end
+
+    context 'when title is blank' do
+      let(:new_title) { '' }
+
+      it 'raises an error' do
+        expect { item.update_title(new_title) }.to raise_error(Todos::Domain::Errors::ArgumentError)
+      end
+    end
+  end
+
+  describe "#update_due_date" do
+    let(:item) { described_class.new(id: 1, title: 'Test', due_date: Date.parse('2025-11-14')) }
+    let(:new_due_date) { Date.parse('2025-11-15') }
+
+    it 'updates the due date' do
+      item.update_due_date(new_due_date)
+      expect(item.due_date).to eq(new_due_date)
+    end
+
+    context 'when due date is blank' do
+      let(:new_due_date) { nil }
+
+      it 'raises an error' do
+        expect { item.update_due_date(new_due_date) }.to raise_error(Todos::Domain::Errors::ArgumentError)
+      end
+    end
+  end
+
+  describe "#update_completed" do
+    let(:item) { described_class.new(id: 1, title: 'Test', due_date: Date.parse('2025-11-14')) }
+    let(:new_completed) { true }
+
+    it 'updates the completed status' do
+      item.update_completed(new_completed)
+      expect(item.completed).to eq(new_completed)
+    end
+
+    context 'when completed is blank' do
+      let(:new_completed) { nil }
+
+      it 'raises an error' do
+        expect { item.update_completed(new_completed) }.to raise_error(Todos::Domain::Errors::ArgumentError)
+      end
+    end
+  end
 end

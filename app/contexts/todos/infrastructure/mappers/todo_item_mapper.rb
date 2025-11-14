@@ -9,6 +9,7 @@ module Todos
             id: record.id,
             title: record.title,
             due_date: record.due_date,
+            completed: record.completed,
             created_at: record.created_at,
             updated_at: record.updated_at
           )
@@ -24,7 +25,8 @@ module Todos
         def self.to_record_attributes(entity)
           {
             title: entity.title,
-            due_date: entity.due_date
+            due_date: entity.due_date,
+            completed: entity.completed
           }
         end
       end
