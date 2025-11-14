@@ -45,6 +45,27 @@ RSpec.describe Todos::Domain::Specifications::TodoItemDependencySpecification do
     end
   end
 
+  context 'when would create circular dependency at deeper levels' do
+    let(:item_c) do
+      Todos::Domain::Entities::TodoItem.new(
+        id: 3,
+        title: 'Task C',
+        due_date: Date.parse('2025-11-12')
+      )
+    end
+
+    before do
+      item_b.dependencies = [item_c]
+      item_a.dependencies = [item_b]
+    end
+
+    let(:action) { described_class.new(item_c, item_a).ensure_satisfied! }
+
+    it 'raises an error detecting the deep circular dependency' do
+      expect { action }.to raise_error(Todos::Domain::Errors::ValidationError, 'Cannot create circular dependency')
+    end
+  end
+
   context 'when due_date is equal to dependency due_date' do
     let(:item_b) { Todos::Domain::Entities::TodoItem.new(id: 2, title: 'Task B', due_date: Date.parse('2025-11-14')) }
     
