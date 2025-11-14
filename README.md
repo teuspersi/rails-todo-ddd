@@ -156,5 +156,5 @@ Projeto organizado em camadas DDD:
 app/contexts/todos/
 ├── presentation/      # Serializers
 ├── application/       # Services (casos de uso)
-├── domain/            # Entities, Repositories, Specs
+├── domain/            # Entities, Repositories, Specifications
 └── infrastructure/    # ActiveRecord, Repositories
