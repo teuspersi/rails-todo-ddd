@@ -18,6 +18,14 @@ RSpec.describe Todos::Application::Services::UpdateTodoItemService do
       expect(item.completed).to be(true)
     end
 
+    it 'returns the updated todo item' do
+      expect(action).to be_a(Todos::Domain::Entities::TodoItem)
+      expect(action.id).to eq(item.id)
+      expect(action.title).to eq('Updated Title')
+      expect(action.due_date).to eq(Date.parse('2025-10-21'))
+      expect(action.completed).to be(true)
+    end
+
     context 'when dependency_ids are provided' do
       let!(:dependency_item) { create(:todo_item_record, due_date: Date.parse('2025-10-19')) }
       let(:params) { { title: 'Updated Title', due_date: Date.parse('2025-10-21'), completed: true, dependency_ids: [dependency_item.id] } }
@@ -26,6 +34,14 @@ RSpec.describe Todos::Application::Services::UpdateTodoItemService do
         action
 
         expect(item.reload.dependency_records.size).to eq(1)
+      end
+
+      it 'returns the updated todo item with dependencies' do
+        expect(action).to be_a(Todos::Domain::Entities::TodoItem)
+        expect(action.id).to eq(item.id)
+        expect(action.title).to eq('Updated Title')
+        expect(action.dependencies.size).to eq(1)
+        expect(action.dependencies.first.id).to eq(dependency_item.id)
       end
 
       context 'when new due_date is invalid according to new dependency due_date' do

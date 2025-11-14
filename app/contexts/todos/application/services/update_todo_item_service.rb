@@ -21,6 +21,8 @@ module Todos
             if params.key?(:due_date) && old_due_date != todo_item.due_date
               cascade_due_date_update(todo_item, old_due_date, todo_item.due_date)
             end
+            
+            reload_todo_item(todo_item.id)
           end
         end
 
@@ -31,6 +33,10 @@ module Todos
           raise RecordNotFoundErro, 'Todo item not found' if todo_item.nil?
 
           todo_item
+        end
+
+        def reload_todo_item(id)
+          @todo_item_repository.find_with_dependencies(id)
         end
 
         def update_todo_item(todo_item, params)
