@@ -15,15 +15,6 @@ module Todos
 
           validates :todo_item_id, presence: true
           validates :depends_on_id, presence: true
-          validate :prevent_self_dependency
-
-          private
-
-          def prevent_self_dependency
-            if todo_item_id == depends_on_id
-              errors.add(:base, 'Item cannot depend on itself')
-            end
-          end
         end
       end
     end
