@@ -148,6 +148,23 @@ Importe `insomnia_collection.yaml` no Insomnia:
 
 ---
 
+## :bar_chart: Cobertura de Testes
+
+Este projeto utiliza [SimpleCov](https://github.com/simplecov-ruby/simplecov) para medir a cobertura dos testes automatizados.
+
+Após rodar os testes com RSpec, um relatório de cobertura é gerado em `coverage/index.html`.
+
+Para visualizar:
+
+```bash
+bundle exec rspec
+open coverage/index.html
+```
+
+O arquivo HTML mostra o percentual de cobertura por arquivo e linha.
+
+---
+
 ## :building_construction: Arquitetura
 
 Projeto organizado em camadas DDD:
